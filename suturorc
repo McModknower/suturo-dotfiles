@@ -1,0 +1,14 @@
+export SUTURO_SCRIPTS="$HOME/.suturo"
+
+if ! [ -r "$SUTURO_SCRIPTS/settings" ]; then
+    cp "$SUTURO_SCRIPTS/settings-default" "$SUTURO_SCRIPTS/settings"
+fi
+source "$SUTURO_SCRIPTS/settings"
+
+if [ "$ZSH_VERSION" ]; then
+    source "$SUTURO_SCRIPTS/suturo.zsh"
+elif [ "$BASH_VERSION" ]; then
+    source "$SUTURO_SCRIPTS/suturo.bash"
+else
+    source "$SUTURO_SCRIPTS/suturo.sh"
+fi

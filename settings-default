@@ -1,0 +1,9 @@
+# Replace the interface with the interface you are using
+# lo won't work for work on the robot, just for work on the local machine
+network_if=lo
+
+if [ -z "$ROS_DISTRO" ]; then
+    # used for sourcing the correct setup.[bz]?sh
+    # change when changing the ros version
+    export ROS_DISTRO=noetic
+fi
