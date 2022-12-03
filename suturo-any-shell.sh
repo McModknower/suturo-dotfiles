@@ -14,8 +14,8 @@ alias hsrb_mode='export ROS_MASTER_URI=http://hsrb.local:11311;set_ros_ip'
 
 . "$(catkin locate --shell-verbs)"
 
-alias cb='catkin build'
-alias cs='catkin source'
-alias ccl='catkin clean'
-alias cbs='cb;cs'
-alias ccbs='ccl;cbs'
+alias src="catkin source"
+alias cb="catkin build"
+alias cbs="cb && src"
+alias ccbs="catkin clean -y && cbs"
+alias ccb="catkin clean -y && cb"
