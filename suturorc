@@ -6,9 +6,11 @@ fi
 source "$SUTURO_SCRIPTS/settings"
 
 if [ "$ZSH_VERSION" ]; then
-    source "$SUTURO_SCRIPTS/suturo.zsh"
+    SOURCING_SHELL=zsh
 elif [ "$BASH_VERSION" ]; then
-    source "$SUTURO_SCRIPTS/suturo.bash"
+    SOURCING_SHELL=bash
 else
-    source "$SUTURO_SCRIPTS/suturo.sh"
+    SOURCING_SHELL=sh
 fi
+
+source "$SUTURO_SCRIPTS/suturo.$SOURCING_SHELL"
