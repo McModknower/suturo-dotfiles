@@ -2,3 +2,5 @@
 *~
 # concrete settings file
 /settings
+# settings dir
+/settings.d/

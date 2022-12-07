@@ -24,3 +24,25 @@ alias percsrc='source ~/SUTURO/SUTURO_WSS/perception_ws/devel/setup.$SOURCING_SH
 alias plansrc='source ~/SUTURO/SUTURO_WSS/planning_ws/devel/setup.$SOURCING_SHELL'
 alias knowsrc='source ~/SUTURO/SUTURO_WSS/knowledge_ws/devel/setup.$SOURCING_SHELL'
 alias manisrc='source ~/SUTURO/SUTURO_WSS/manipulation_ws/devel/setup.$SOURCING_SHELL'
+
+# Make sure that the git command is only set the first time.
+# ZSH would otherwise return the function when sourcing a second time
+if [ -z "$SUTURO_GIT_COMMAND" ]; then
+    SUTURO_GIT_COMMAND="$(which git)"
+fi
+
+git() {
+    local NAME="$1"
+    # use the .sh file ending so editors automatically apply syntax highlighting
+    local SUTURO_CONFIG_FILE="$HOME/.suturo/settings.d/gitconfig-$NAME.sh"
+    # if NAME is not empty and the file exists
+    if [ -n "$NAME" ] && [ -r "$SUTURO_CONFIG_FILE" ]; then
+	# remove NAME from the list of parameters
+	shift 1
+	# spawn a subshell so the environment variables are not persisted.
+	# "$@" expands to all positional parameters, as seperate words.
+	(source "$SUTURO_CONFIG_FILE" && "$SUTURO_GIT_COMMAND" "$@")
+    else
+	"$SUTURO_GIT_COMMAND" "$@"
+    fi
+}
