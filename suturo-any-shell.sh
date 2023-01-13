@@ -7,10 +7,31 @@ set_ros_ip(){
     fi
 }
 
+load_ros_mode(){
+    local MODE=localhost
+    local ROS_MODE_FILE="$HOME/.suturo/settings.d/rosmode"
+    if [ -r "$ROS_MODE_FILE" ]; then
+	MODE="$(cat "$ROS_MODE_FILE")"
+    fi
+    if [ "$MODE" = "localhost" ] || [ "$MODE" = "hsrb.local" ]; then
+	export ROS_MASTER_URI="http://${MODE}:11311"
+	set_ros_ip
+	echo "Ros mode is $MODE"
+    fi
+}
+
+set_ros_mode(){
+    mkdir -p "$HOME/.suturo/settings.d/"
+    echo "$1" > "$HOME/.suturo/settings.d/rosmode"
+    load_ros_mode
+}
+
 export ROS_HOME=~/.ros
 
-alias sim_mode='export ROS_MASTER_URI=http://localhost:11311;set_ros_ip'
-alias hsrb_mode='export ROS_MASTER_URI=http://hsrb.local:11311;set_ros_ip'
+load_ros_mode
+
+alias sim_mode='set_ros_mode localhost'
+alias hsrb_mode='set_ros_mode hsrb.local'
 
 . "$(catkin locate --shell-verbs)"
 
