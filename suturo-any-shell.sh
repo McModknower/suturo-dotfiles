@@ -1,9 +1,15 @@
 set_ros_ip(){
-    TARGET_IP=$(LANG=C /sbin/ip address show $network_if | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*')
+    for i in "${network_if[@]}"; do
+	TARGET_IP=$(LANG=C /sbin/ip address show $i | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*')
+	if [ -z "$TARGET_IP" ] ; then
+	    echo "IP not set for $i, testing next interface."
+	else
+	    export ROS_IP=$TARGET_IP
+	    break;
+	fi
+    done
     if [ -z "$TARGET_IP" ] ; then
-	echo "ROS_IP not set."
-    else
-	export ROS_IP=$TARGET_IP
+	echo "ROS_IP not set, no interface with valid ip found"
     fi
 }
 
