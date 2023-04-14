@@ -67,3 +67,16 @@ git() {
 	"$SUTURO_GIT_COMMAND" "$@"
     fi
 }
+
+git_ssh_repo(){
+    local URL="$(git remote get-url origin)"
+    if echo "$URL" | grep -vqE '^https'; then
+	echo "This repo is not using an https clone url, aborting."
+    else
+	# https://github.com/SUTURO/suturo_knowledge.git
+	# git@github.com:SUTURO/suturo_knowledge.git
+	URL="$(echo "$URL" | sed -e 's/^https:\/\//git@/;s/\//:/')"
+	git remote set-url --push origin "$URL"
+	echo "Changed push url to $URL"
+    fi
+}
