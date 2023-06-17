@@ -21,6 +21,7 @@ load_ros_mode(){
     fi
     if [ "$MODE" = "localhost" ] || [ "$MODE" = "hsrb.local" ]; then
 	export ROS_MASTER_URI="http://${MODE}:11311"
+	ROS_MODE_NAME="$MODE"
 	set_ros_ip
 	echo "Ros mode is $MODE"
     fi
@@ -86,3 +87,26 @@ git_ssh_repo(){
 	echo "Changed push url to $URL"
     fi
 }
+
+
+# setting the prompt
+parse_git_branch() {
+	git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+show_ros_mode() {
+	if [ -n "$ROS_MODE_NAME" ]; then
+		echo "($ROS_MODE_NAME)"
+	fi
+}
+
+# copied from default .bashrc, checks for colored terminals
+case "$TERM" in
+    xterm-color|*-256color) color_prompt=yes;;
+esac
+
+if [ "$color_prompt" = yes ]; then
+	PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;31m\]$(parse_git_branch)\[\033[01;33m\]$(show_ros_mode)\[\033[00m\]\$ '
+else
+	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)$(show_ros_mode)\$ '
+fi
+unset color_prompt force_color_prompt
