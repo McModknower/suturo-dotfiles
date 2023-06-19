@@ -105,7 +105,8 @@ case "$TERM" in
 esac
 
 if [ "$color_prompt" = yes ]; then
-	PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[01;31m\]$(parse_git_branch)\[\033[01;33m\]$(show_ros_mode)\[\033[00m\]\$ '
+	# the colors need to be inserted here and not later, that results in the '"COLOR"' sequences in between the rest.
+	PS1='${debian_chroot:+($debian_chroot)}'"${COLOR_GREEN}${PROMT_USER}"'@'"${PROMT_HOST}${COLOR_WHITE}"':'"${COLOR_BLUE}${PROMT_WORKDIR}${COLOR_RED}"'$(parse_git_branch)'"${COLOR_YELLOW}"'$(show_ros_mode)'"${COLOR_WHITE}"'\$ '
 else
 	PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w$(parse_git_branch)$(show_ros_mode)\$ '
 fi
