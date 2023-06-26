@@ -88,6 +88,20 @@ git_ssh_repo(){
     fi
 }
 
+git_https_repo(){
+    local URL="$(git remote get-url origin)"
+    if echo "$URL" | grep -vqE '^git@'; then
+	echo "This repo is not using an ssh clone url, aborting."
+    else
+	# git@github.com:SUTURO/suturo_knowledge.git
+	# https://github.com/SUTURO/suturo_knowledge.git
+	NEW_URL="$(echo "$URL" | sed -e 's/:/\//;s/^git@/https:\/\//')"
+	git remote set-url origin "$NEW_URL"
+	git remote set-url --push origin "$URL"
+	echo "Changed pull url to $NEW_URL"
+    fi
+}
+
 
 # setting the prompt
 parse_git_branch() {

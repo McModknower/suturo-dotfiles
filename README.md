@@ -43,6 +43,8 @@ and new shell sessions after setting the rosmode will use the new mode.
 ### `git_ssh_repo`
 The command `git_ssh_repo` changes the push url of a repository to an ssh url,
 so you can push using an ssh key instead of username and password.
+### `git_https_repo`
+Similar to `git_ssh_repo`, sets the normal url to https and the push url to the old url. Useful for fixing repos that didn't use `git_ssh_repo`, especially sicne ssh repos can't be cloned automatically by wstool unless there is an ssh key without a password.
 ### User-Specific Git configuration
 Since there are multiple people using the same user account on the suturo computers,
 there is a way to have multiple ssh-key and git author configurations.
