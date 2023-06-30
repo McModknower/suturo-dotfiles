@@ -5,6 +5,7 @@ set_ros_ip(){
 	    echo "IP not set for $i, testing next interface."
 	else
 	    export ROS_IP=$TARGET_IP
+		export ROS_HOSTNAME=$TARGET_IP
 	    break;
 	fi
     done
